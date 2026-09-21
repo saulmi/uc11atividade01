@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -19,6 +20,26 @@ public class listagemVIEW extends javax.swing.JFrame {
     public listagemVIEW() {
         initComponents();
         listarProdutos();
+    }
+    private void listarProdutos() {
+    try {
+        ProdutosDAO produtosdao = new ProdutosDAO();
+        DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+        model.setNumRows(0);
+
+        ArrayList<ProdutosDTO> vetor = produtosdao.listarProdutos();
+
+        for (int i = 0; i < vetor.size(); i++) {
+            model.addRow(new Object[]{
+                vetor.get(i).getId(),
+                vetor.get(i).getNome(),
+                vetor.get(i).getValor(),
+                vetor.get(i).getStatus()
+            });
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro ao carregar tabela: " + e.getMessage());
+    }
     }
 
     /**
@@ -201,7 +222,7 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
 
-    private void listarProdutos(){
+    private void listaProdutos(){
         try {
             ProdutosDAO produtosdao = new ProdutosDAO();
             
